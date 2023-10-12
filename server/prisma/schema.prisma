@@ -13,7 +13,7 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  username  String   @unique
+  emailaddress  String   @unique
   password  String
   boards    Board[]
 }

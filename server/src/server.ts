@@ -11,4 +11,5 @@ app.use(express.json());
 app.use("/api/v1", protect, router);
 app.post("/user", createUser);
 app.post("/signin", signin);
+
 export default app;

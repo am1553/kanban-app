@@ -4,19 +4,23 @@ import prisma from "../db";
  * GET ALL BOARDS
  */
 export const getBoards = async (req, res) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: req.user.id,
-    },
-    include: {
-      boards: {
-        include: {
-          columns: true,
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      include: {
+        boards: {
+          include: {
+            columns: true,
+          },
         },
       },
-    },
-  });
-  res.json({ data: user.boards });
+    });
+    res.json({ data: user.boards });
+  } catch (error) {
+    res.status(401).json({ message: "Failed to retrieve boards." });
+  }
 };
 
 /**
@@ -24,48 +28,57 @@ export const getBoards = async (req, res) => {
  */
 export const getBoard = async (req, res) => {
   const { id: boardID } = req.params;
-  const board = await prisma.board.findUnique({
-    where: {
-      id: boardID,
-      userID: req.user.id,
-    },
-    include: {
-      columns: true,
-    },
-  });
 
-  const sortBoardBasedOnColumns = board.columns.sort((a, b) => {
-    const dateA: any = new Date(a.createdAt);
-    const dateB: any = new Date(b.createdAt);
-    return dateA - dateB;
-  });
-  res.json({
-    data: sortBoardBasedOnColumns,
-  });
+  try {
+    const board = await prisma.board.findUnique({
+      where: {
+        id: boardID,
+        userID: req.user.id,
+      },
+      include: {
+        columns: true,
+      },
+    });
+
+    const sortBoardBasedOnColumns = board.columns.sort((a, b) => {
+      const dateA: any = new Date(a.createdAt);
+      const dateB: any = new Date(b.createdAt);
+      return dateA - dateB;
+    });
+    res.json({
+      data: sortBoardBasedOnColumns,
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Failed to retrieve board." });
+  }
 };
 
 /**
  * CREATE BOARD
  */
 export const createBoard = async (req, res) => {
-  const board = await prisma.board.create({
-    data: {
-      name: req.body.name,
-      userID: req.user.id,
-      columns: {
-        create: req.body.columns,
+  try {
+    const board = await prisma.board.create({
+      data: {
+        name: req.body.name,
+        userID: req.user.id,
+        columns: {
+          create: req.body.columns,
+        },
       },
-    },
-    include: {
-      columns: true,
-    },
-  });
+      include: {
+        columns: true,
+      },
+    });
 
-  res.json({
-    data: {
-      board,
-    },
-  });
+    res.json({
+      data: {
+        board,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Failed to create board." });
+  }
 };
 
 /**
@@ -79,36 +92,48 @@ export const updateBoard = async (req, res) => {
   columns
     .filter((column) => !column.id)
     .map(async (column) => {
-      await prisma.columns.create({
-        data: { ...column, boardID },
-      });
+      try {
+        await prisma.columns.create({
+          data: { ...column, boardID },
+        });
+      } catch (error) {
+        res.status(401).json({ message: "Failed to create new column." });
+      }
     });
 
   // if the body contains existing column then update it
   columns
     .filter((column) => column.id)
     .map(async (column) => {
-      await prisma.columns.update({
-        where: {
-          id: column.id,
-        },
-        data: column,
-      });
+      try {
+        await prisma.columns.update({
+          where: {
+            id: column.id,
+          },
+          data: column,
+        });
+      } catch (error) {
+        res.status(401).json({ message: "Failed to update columns." });
+      }
     });
 
-  const board = await prisma.board.update({
-    where: {
-      id: boardID,
-    },
-    data: {
-      name: req.body.name,
-    },
-    include: {
-      columns: true,
-    },
-  });
+  try {
+    const board = await prisma.board.update({
+      where: {
+        id: boardID,
+      },
+      data: {
+        name: req.body.name,
+      },
+      include: {
+        columns: true,
+      },
+    });
 
-  res.json({ data: board });
+    res.json({ data: board });
+  } catch (error) {
+    res.status(401).json({ message: "Failed to update board." });
+  }
 };
 
 /**
@@ -117,16 +142,20 @@ export const updateBoard = async (req, res) => {
 
 export const deleteBoard = async (req, res) => {
   const { id: boardID } = req.params;
-  await prisma.columns.deleteMany({
-    where: {
-      boardID,
-    },
-  });
-  const board = await prisma.board.delete({
-    where: {
-      id: boardID,
-    },
-  });
+  try {
+    await prisma.columns.deleteMany({
+      where: {
+        boardID,
+      },
+    });
+    const board = await prisma.board.delete({
+      where: {
+        id: boardID,
+      },
+    });
 
-  res.json({ data: board, message: "deleted" });
+    res.json({ data: board, message: "deleted" });
+  } catch (error) {
+    res.status(401).json({ message: "Failed to delete board." });
+  }
 };

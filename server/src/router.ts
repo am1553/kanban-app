@@ -6,6 +6,13 @@ import {
   getBoards,
   updateBoard,
 } from "../handlers/board";
+import {
+  createTask,
+  deleteTask,
+  getTask,
+  getTasks,
+  updateTask,
+} from "../handlers/task";
 
 const router = Router();
 
@@ -22,11 +29,11 @@ router.delete("/boards/:id", deleteBoard);
  * TASKS
  */
 
-router.get("/tasks", () => {});
-router.get("/tasks/:id", () => {});
-router.patch("/tasks/:id", () => {});
-router.post("/tasks", () => {});
-router.delete("/tasks/:id", () => {});
+router.get("/tasks", getTasks);
+router.get("/tasks/:id", getTask);
+router.put("/tasks/:id", updateTask);
+router.post("/tasks", createTask);
+router.delete("/tasks/:id", deleteTask);
 
 /**
  * SUBTASKS

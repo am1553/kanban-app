@@ -85,7 +85,7 @@ export const updateBoard = async (req, res) => {
     });
 
   // if the body contains existing column then update it
-  const existingColumns = columns
+  columns
     .filter((column) => column.id)
     .map(async (column) => {
       await prisma.columns.update({

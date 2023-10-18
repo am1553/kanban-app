@@ -1,27 +1,22 @@
 import { Router } from "express";
+import {
+  createBoard,
+  deleteBoard,
+  getBoard,
+  getBoards,
+  updateBoard,
+} from "../handlers/board";
 
 const router = Router();
 
 /**
  * BOARDS
  */
-router.get("/boards", (req, res) => {
-  res.status(200).json({ message: "hello" });
-});
-router.get("/boards/:id", () => {});
-router.put("/boards/:id", () => {});
-router.post("/boards", () => {});
-router.delete("/boards/:id", () => {});
-
-/*
- * COLUMNS
- */
-
-router.get("/columns", () => {});
-router.get("/columns/:id", () => {});
-router.put("/columns/:id", () => {});
-router.post("/columns", () => {});
-router.delete("/columns/:id", () => {});
+router.get("/boards", getBoards);
+router.get("/boards/:id", getBoard);
+router.put("/boards/:id", updateBoard);
+router.post("/boards", createBoard);
+router.delete("/boards/:id", deleteBoard);
 
 /**
  * TASKS
@@ -29,7 +24,7 @@ router.delete("/columns/:id", () => {});
 
 router.get("/tasks", () => {});
 router.get("/tasks/:id", () => {});
-router.put("/tasks/:id", () => {});
+router.patch("/tasks/:id", () => {});
 router.post("/tasks", () => {});
 router.delete("/tasks/:id", () => {});
 

@@ -21,7 +21,7 @@ model User {
 model Board {
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
-  name      String    @unique @db.VarChar(255)
+  name      String    @db.VarChar(255)
   userID    String
   belongsTo User      @relation(fields: [userID], references: [id])
   columns   Columns[]

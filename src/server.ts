@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use("/", (req, res) => {
+  res.json({ message: "started" });
+});
 app.use("/api/v1", protect, router);
 app.post("/user", createUser);
 app.post("/signin", signin);

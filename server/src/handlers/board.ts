@@ -1,5 +1,4 @@
 import prisma from "../db";
-
 /**
  * GET ALL BOARDS
  */

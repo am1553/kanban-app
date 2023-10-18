@@ -5,14 +5,14 @@ import {
   getBoard,
   getBoards,
   updateBoard,
-} from "../handlers/board";
+} from "./handlers/board";
 import {
   createTask,
   deleteTask,
   getTask,
   getTasks,
   updateTask,
-} from "../handlers/task";
+} from "./handlers/task";
 
 const router = Router();
 

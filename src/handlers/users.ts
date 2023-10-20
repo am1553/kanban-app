@@ -12,7 +12,7 @@ export const createUser = async (req, res) => {
       },
     });
     const token = createJWT(user);
-    res.json({ token });
+    res.json({ token, user });
   } catch (error) {
     res.status(401).json({ message: "Invalid input" });
   }
@@ -37,7 +37,7 @@ export const signin = async (req, res) => {
     }
 
     const token = createJWT(user);
-    res.json({ token });
+    res.json({ token, user });
   } catch (error) {
     res.status(401).json({ message: "Invalid input" });
   }

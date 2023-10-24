@@ -5,7 +5,7 @@ import cors from "cors";
 import { protect } from "./modules/auth";
 import { createUser, signin } from "./handlers/users";
 const app = express();
-app.use(cors({ credentials: true }));
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/api/v1", protect, router);

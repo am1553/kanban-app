@@ -39,13 +39,8 @@ export const getBoard = async (req, res) => {
       },
     });
 
-    const sortBoardBasedOnColumns = board.columns.sort((a, b) => {
-      const dateA: any = new Date(a.createdAt);
-      const dateB: any = new Date(b.createdAt);
-      return dateA - dateB;
-    });
     res.json({
-      data: sortBoardBasedOnColumns,
+      data: board,
     });
   } catch (error) {
     res.status(401).json({ message: "Failed to retrieve board." });

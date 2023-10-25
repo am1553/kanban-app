@@ -53,6 +53,7 @@ export const getBoard = async (req, res) => {
 export const createBoard = async (req, res) => {
   const user = req.user;
   if (!user) res.json({ message: "No user found." });
+
   try {
     const board = await prisma.board.create({
       data: {
@@ -73,7 +74,9 @@ export const createBoard = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(401).json({ message: "Failed to create board." });
+    res
+      .status(401)
+      .json({ message: "Failed to create board.", data: req.body });
   }
 };
 

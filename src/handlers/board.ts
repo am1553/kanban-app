@@ -53,7 +53,9 @@ export const getBoard = async (req, res) => {
 export const createBoard = async (req, res) => {
   const user = req.user;
   if (!user) res.json({ message: "No user found." });
-
+  if (req.body.name === "") {
+    res.json({ message: "Name cannot be empty." });
+  }
   try {
     const board = await prisma.board.create({
       data: {

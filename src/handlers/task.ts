@@ -4,6 +4,9 @@ import prisma from "../db";
  * Create a new task
  */
 export const createTask = async (req, res) => {
+  if (req.body.title === "") {
+    res.status(401).json({ message: "Title cannot be empty." });
+  }
   try {
     const newTask = await prisma.tasks.create({
       data: {
@@ -19,7 +22,7 @@ export const createTask = async (req, res) => {
 
     res.send({ data: newTask });
   } catch (error) {
-    res.status(401).json({ message: "Failed to create task." });
+    res.status(401).json({ message: "Failed to create task.", error });
   }
 };
 

@@ -8,6 +8,7 @@ export const createTask = async (req, res) => {
     const newTask = await prisma.tasks.create({
       data: {
         title: req.body.title,
+        description: req.body.description,
         columnID: req.body.columnID,
         subtasks: {
           create: req.body.subtasks,

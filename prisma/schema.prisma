@@ -41,6 +41,7 @@ model Tasks {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
   title String 
+  description String
   columnID String
   belongsTo Columns @relation(fields: [columnID], references: [id])
   subtasks Subtask[]

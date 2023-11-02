@@ -78,7 +78,7 @@ export const createBoard = async (req, res) => {
   } catch (error) {
     res
       .status(401)
-      .json({ message: "Failed to create board.", data: req.body });
+      .json({ message: "Failed to create board.", data: req.body, error });
   }
 };
 

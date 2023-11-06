@@ -31,7 +31,7 @@ router.delete("/boards/:id", deleteBoard);
 
 router.get("/tasks", getTasks);
 router.get("/tasks/:id", getTask);
-router.put("/tasks/:id", updateTask);
+router.patch("/tasks/:id", updateTask);
 router.post("/tasks", createTask);
 router.delete("/tasks/:id", deleteTask);
 

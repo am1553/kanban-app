@@ -75,6 +75,7 @@ export const updateTask = async (req, res) => {
       data: {
         title: req.body.title,
         columnID: req.body.columnID,
+        description: req.body.description,
       },
       include: {
         subtasks: true,

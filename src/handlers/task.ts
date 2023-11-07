@@ -67,35 +67,6 @@ export const getTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   const { id: taskID } = req.params;
-  const { subtasks } = req.body;
-  subtasks
-    .filter((subtask) => !subtask.id)
-    .map(async (subtask) => {
-      try {
-        await prisma.subtask.create({
-          data: { ...subtask, taskID },
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to create the new subtask." });
-      }
-    });
-
-  subtasks
-    .filter((subtask) => subtask.id)
-    .map(async (subtask) => {
-      console.log(subtask, "existing");
-      try {
-        await prisma.subtask.update({
-          where: {
-            id: subtask.id,
-          },
-          data: subtask,
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to update the subtask." });
-      }
-    });
-
   try {
     const updatedTask = await prisma.tasks.update({
       where: {

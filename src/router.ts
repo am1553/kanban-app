@@ -13,6 +13,11 @@ import {
   getTasks,
   updateTask,
 } from "./handlers/task";
+import {
+  createSubtask,
+  deleteSubtask,
+  updateSubtask,
+} from "./handlers/subtasks";
 
 const router = Router();
 
@@ -39,10 +44,8 @@ router.delete("/tasks/:id", deleteTask);
  * SUBTASKS
  */
 
-router.get("/subtasks", () => {});
-router.get("/subtasks/:id", () => {});
-router.put("/subtasks/:id", () => {});
-router.post("/subtasks", () => {});
-router.delete("/subtasks/:id", () => {});
+router.put("/subtasks/:id", updateSubtask);
+router.post("/subtasks", createSubtask);
+router.delete("/subtasks/:id", deleteSubtask);
 
 export default router;

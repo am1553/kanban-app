@@ -35,7 +35,7 @@ router.delete("/boards/:id", deleteBoard);
  * COLUMNS
  */
 
-router.post("columns", createColumn);
+router.post("columns/:id", createColumn);
 router.put("columns/:id", updateColumn);
 router.delete("columns/:id", deleteColumn);
 

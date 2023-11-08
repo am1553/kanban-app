@@ -100,43 +100,41 @@ export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
   const { columns } = req.body;
 
-  // if the body contains a new column then create a new column
-  columns
-    .filter((column) => !column.id)
-    .map(async (column) => {
-      try {
-        await prisma.columns.create({
-          data: { ...column, boardID },
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to create new column." });
-      }
-    });
+  // // if the body contains a new column then create a new column
+  // columns
+  //   .filter((column) => !column.id)
+  //   .map(async (column) => {
+  //     try {
+  //       await prisma.columns.create({
+  //         data: { ...column, boardID },
+  //       });
+  //     } catch (error) {
+  //       res.status(401).json({ message: "Failed to create new column." });
+  //     }
+  //   });
 
-  // if the body contains existing column then update it
-  columns
-    .filter((column) => column.id)
-    .map(async (column) => {
-      try {
-        await prisma.columns.update({
-          where: {
-            id: column.id,
-          },
-          data: column,
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to update columns." });
-      }
-    });
+  // // if the body contains existing column then update it
+  // columns
+  //   .filter((column) => column.id)
+  //   .map(async (column) => {
+  //     try {
+  //       await prisma.columns.update({
+  //         where: {
+  //           id: column.id,
+  //         },
+  //         data: column,
+  //       });
+  //     } catch (error) {
+  //       res.status(401).json({ message: "Failed to update columns." });
+  //     }
+  //   });
 
   try {
     const board = await prisma.board.update({
       where: {
         id: boardID,
       },
-      data: {
-        name: req.body.name,
-      },
+      data: req.body,
       include: {
         columns: true,
       },

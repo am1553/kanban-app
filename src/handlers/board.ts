@@ -136,21 +136,15 @@ export const updateBoard = async (req, res) => {
 
   //if the body contains deleted columns then delete the column
 
-  try {
-    const deleteColumns = async (id: string) =>
-      await prisma.columns.delete({
+  existingColumns.filter((col) => {
+    if (columns.find((item) => item.id !== col.id)) {
+      prisma.columns.delete({
         where: {
-          id,
+          id: col.id,
         },
       });
-    existingColumns.filter((col) => {
-      if (columns.find((item) => item.id !== col.id)) {
-        deleteColumns(col.id);
-      }
-    });
-  } catch (error) {
-    res.status(401).json({ message: "Failed to update board.", error });
-  }
+    }
+  });
 
   try {
     const board = await prisma.board.update({

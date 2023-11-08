@@ -147,7 +147,7 @@ export const updateBoard = async (req, res) => {
 
     res.json({ data: board });
   } catch (error) {
-    res.status(401).json({ message: "Failed to update board." });
+    res.status(401).json({ message: "Failed to update board.", error });
   }
 };
 

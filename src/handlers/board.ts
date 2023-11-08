@@ -134,7 +134,12 @@ export const updateBoard = async (req, res) => {
       where: {
         id: boardID,
       },
-      data: req.body,
+      data: {
+        name: req.body.name,
+        columns: {
+          updateMany: req.body.columns,
+        },
+      },
       include: {
         columns: true,
       },

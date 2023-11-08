@@ -100,6 +100,7 @@ export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
   const { columns } = req.body;
   const updateColumns = columns.map((col) => ({ ...col, boardID }));
+
   try {
     const board = await prisma.board.update({
       where: {
@@ -115,6 +116,7 @@ export const updateBoard = async (req, res) => {
         columns: true,
       },
     });
+
     res.status(200).json({ data: board });
   } catch (error) {
     res.status(500).json({ message: "Failed to update board.", error });

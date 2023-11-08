@@ -107,7 +107,7 @@ export const updateBoard = async (req, res) => {
         name: req.body.name,
         userID: req.user.id,
         columns: {
-          set: req.body.columns,
+          upsert: req.body.columns,
         },
       },
       include: {

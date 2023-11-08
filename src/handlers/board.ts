@@ -72,12 +72,13 @@ export const createBoard = async (req, res) => {
       data: {
         name: req.body.name,
         userID: req.user.id,
-        columns: {
-          create: req.body.columns,
-        },
       },
       include: {
-        columns: true,
+        columns: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
       },
     });
 
@@ -98,54 +99,6 @@ export const createBoard = async (req, res) => {
  */
 export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
-  const { columns } = req.body;
-  const existingColumns = await prisma.columns.findMany({
-    where: {
-      boardID,
-    },
-  });
-
-  // if the body contains a new column then create a new column
-  columns
-    .filter((column) => !column.id)
-    .map(async (column) => {
-      try {
-        await prisma.columns.create({
-          data: { ...column, boardID },
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to create new column." });
-      }
-    });
-
-  // if the body contains existing column then update it
-  columns
-    .filter((column) => column.id)
-    .map(async (column) => {
-      try {
-        await prisma.columns.update({
-          where: {
-            id: column.id,
-          },
-          data: column,
-        });
-      } catch (error) {
-        res.status(401).json({ message: "Failed to update columns." });
-      }
-    });
-
-  //if the body contains deleted columns then delete the column
-
-  existingColumns.filter((col) => {
-    if (columns.find((item) => item.id !== col.id)) {
-      prisma.columns.delete({
-        where: {
-          id: col.id,
-        },
-      });
-    }
-  });
-
   try {
     const board = await prisma.board.update({
       where: {
@@ -155,10 +108,13 @@ export const updateBoard = async (req, res) => {
         name: req.body.name,
       },
       include: {
-        columns: true,
+        columns: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
       },
     });
-
     res.json({ data: board });
   } catch (error) {
     res.status(401).json({ message: "Failed to update board." });

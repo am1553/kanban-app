@@ -108,6 +108,7 @@ export const updateBoard = async (req, res) => {
         userID: req.user.id,
         columns: {
           set: req.body.columns,
+          updateMany: req.body.columns,
         },
       },
       include: {

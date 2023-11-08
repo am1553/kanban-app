@@ -98,9 +98,6 @@ export const createBoard = async (req, res) => {
  */
 export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
-  const { columns } = req.body;
-  const updateColumns = columns.map((col) => ({ ...col, boardID }));
-
   try {
     const board = await prisma.board.update({
       where: {
@@ -108,8 +105,9 @@ export const updateBoard = async (req, res) => {
       },
       data: {
         name: req.body.name,
+        userID: req.user.id,
         columns: {
-          set: updateColumns,
+          set: req.body.columns,
         },
       },
       include: {

@@ -99,6 +99,11 @@ export const createBoard = async (req, res) => {
 export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
   const { columns } = req.body;
+  const existingColumns = await prisma.columns.findMany({
+    where: {
+      boardID,
+    },
+  });
 
   // if the body contains a new column then create a new column
   columns
@@ -128,6 +133,19 @@ export const updateBoard = async (req, res) => {
         res.status(401).json({ message: "Failed to update columns." });
       }
     });
+
+  //if the body contains deleted columns then delete the column
+  const deleteColumns = async (id: string) =>
+    await prisma.columns.delete({
+      where: {
+        id,
+      },
+    });
+  existingColumns.filter((col) => {
+    if (columns.find((item) => item.id !== col.id)) {
+      deleteColumns(col.id);
+    }
+  });
 
   try {
     const board = await prisma.board.update({

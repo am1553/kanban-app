@@ -18,7 +18,6 @@ import {
   deleteSubtask,
   updateSubtask,
 } from "./handlers/subtasks";
-import { createColumn, deleteColumn, updateColumn } from "./handlers/columns";
 
 const router = Router();
 
@@ -30,14 +29,6 @@ router.get("/boards/:id", getBoard);
 router.put("/boards/:id", updateBoard);
 router.post("/boards", createBoard);
 router.delete("/boards/:id", deleteBoard);
-
-/**
- * COLUMNS
- */
-
-router.post("columns/:id", createColumn);
-router.put("columns/:id", updateColumn);
-router.delete("columns/:id", deleteColumn);
 
 /**
  * TASKS

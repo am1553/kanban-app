@@ -10,8 +10,15 @@ export const getBoards = async (req, res) => {
       },
       include: {
         boards: {
+          orderBy: {
+            createdAt: "asc",
+          },
           include: {
-            columns: true,
+            columns: {
+              orderBy: {
+                createdAt: "asc",
+              },
+            },
           },
         },
       },
@@ -35,7 +42,11 @@ export const getBoard = async (req, res) => {
         userID: req.user.id,
       },
       include: {
-        columns: true,
+        columns: {
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
       },
     });
 

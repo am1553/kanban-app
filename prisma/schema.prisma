@@ -30,8 +30,8 @@ model Board {
 model Columns {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
-  name      String @db.VarChar(255)
-  color String @db.VarChar(7)
+  name      String 
+  color String 
   boardID   String
   belongsTo Board    @relation(fields: [boardID], references: [id])
   tasks Tasks[]

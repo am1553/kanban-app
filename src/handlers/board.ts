@@ -98,6 +98,22 @@ export const createBoard = async (req, res) => {
  */
 export const updateBoard = async (req, res) => {
   const { id: boardID } = req.params;
+  const { columns } = req.body;
+  const existingBoard = await prisma.board.findUnique({
+    where: {
+      id: boardID,
+    },
+    include: {
+      columns: true,
+    },
+  });
+
+  // the columns in existingboard that doesnt existing in columns will be deleted;
+  const toDeleteColumns = existingBoard.columns.filter((column) => {
+    if (columns.find((col) => col.id === column.id)) return;
+    return column;
+  });
+
   try {
     const board = await prisma.board.update({
       where: {
@@ -107,7 +123,8 @@ export const updateBoard = async (req, res) => {
         name: req.body.name,
         userID: req.user.id,
         columns: {
-          set: req.body.columns,
+          deleteMany: toDeleteColumns,
+          updateMany: columns,
         },
       },
       include: {

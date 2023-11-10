@@ -116,7 +116,7 @@ export const updateBoard = async (req, res) => {
       },
     });
 
-    const updatedColumns = updateExistingColumns.map((column) => {
+    const updatedColumns = updateExistingColumns.forEach((column) =>
       prisma.columns.update({
         where: {
           id: column.id,
@@ -125,25 +125,25 @@ export const updateBoard = async (req, res) => {
           name: column.name,
           color: column.color,
         },
-      });
-    });
+      })
+    );
 
-    const createNewColumns = newColumns.map((column) => {
+    const createNewColumns = newColumns.forEach((column) =>
       prisma.columns.create({
         data: {
           boardID: board.id,
           name: column.name,
           color: column.color,
         },
-      });
-    });
+      })
+    );
 
-    const deleteColumns = board.columns.map((column) => {
+    const deleteColumns = board.columns.forEach((column) => {
       const reqColumnsIDs = req.body.columns.map((col) => col.id);
       if (reqColumnsIDs.includes(column.id)) {
         return;
       }
-      prisma.columns.delete({
+      return prisma.columns.delete({
         where: {
           id: column.id,
         },

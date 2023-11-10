@@ -149,7 +149,12 @@ export const updateBoard = async (req, res) => {
         },
       });
     });
-    res.status(200).json({ data: board });
+    res
+      .status(200)
+      .json({
+        data: board,
+        columns: { updatedColumns, newColumns, deleteColumns },
+      });
   } catch (error) {
     res.status(500).json({ message: "Failed to update board.", error });
   }

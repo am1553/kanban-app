@@ -110,6 +110,19 @@ export const updateBoard = async (req, res) => {
       },
       data: {
         name: req.body.name,
+        columns: {
+          update: updateExistingColumns.map((column) => {
+            return {
+              where: {
+                id: column.id,
+              },
+              data: column,
+            };
+          }),
+          createMany: {
+            data: newColumns,
+          },
+        },
       },
       include: {
         columns: true,

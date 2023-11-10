@@ -116,42 +116,8 @@ export const updateBoard = async (req, res) => {
       },
     });
 
-    const updatedColumns = updateExistingColumns.forEach((column) =>
-      prisma.columns.update({
-        where: {
-          id: column.id,
-        },
-        data: {
-          name: column.name,
-          color: column.color,
-        },
-      })
-    );
-
-    const createNewColumns = newColumns.forEach((column) =>
-      prisma.columns.create({
-        data: {
-          boardID: board.id,
-          name: column.name,
-          color: column.color,
-        },
-      })
-    );
-
-    const deleteColumns = board.columns.forEach((column) => {
-      const reqColumnsIDs = req.body.columns.map((col) => col.id);
-      if (reqColumnsIDs.includes(column.id)) {
-        return;
-      }
-      return prisma.columns.delete({
-        where: {
-          id: column.id,
-        },
-      });
-    });
     res.status(200).json({
       data: board,
-      columns: { updatedColumns, createNewColumns, deleteColumns },
     });
   } catch (error) {
     res.status(500).json({ message: "Failed to update board.", error });

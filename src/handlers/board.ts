@@ -116,7 +116,7 @@ export const updateBoard = async (req, res) => {
       },
     });
 
-    const updatedColumns = updateExistingColumns.forEach((column) => {
+    const updatedColumns = updateExistingColumns.map((column) => {
       prisma.columns.update({
         where: {
           id: column.id,
@@ -128,7 +128,7 @@ export const updateBoard = async (req, res) => {
       });
     });
 
-    const createNewColumns = newColumns.forEach((column) => {
+    const createNewColumns = newColumns.map((column) => {
       prisma.columns.create({
         data: {
           boardID: board.id,
@@ -138,7 +138,7 @@ export const updateBoard = async (req, res) => {
       });
     });
 
-    const deleteColumns = board.columns.forEach((column) => {
+    const deleteColumns = board.columns.map((column) => {
       const reqColumnsIDs = req.body.columns.map((col) => col.id);
       if (reqColumnsIDs.includes(column.id)) {
         return;
